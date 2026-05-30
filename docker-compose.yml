@@ -20,7 +20,7 @@ services:
       timeout: 10s
       retries: 3
       start_period: 10s
-elasticsearch:
+  elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
     container_name: mqtt-elasticsearch
     restart: unless-stopped
