@@ -23,6 +23,7 @@ services:
 
 
 
+#Network
 networks:
   mqtt-network:
     driver: bridge
@@ -30,3 +31,20 @@ networks:
       config:
         - subnet: 172.20.0.0/16
           gateway: 172.20.0.1
+
+#Volumes
+volumes:
+  mosquitto-data:
+    driver: local
+  mosquitto-log:
+    driver: local
+  elasticsearch-data:
+    driver: local
+  kibana-data:
+    driver: local
+  grafana-data:
+    driver: local
+  scheduler-logs:
+    driver: local
+  publisher-logs:
+    driver: local
