@@ -1,0 +1,22 @@
+services:
+  # ============================================================================
+  # MQTT Broker - Mosquitto
+  # ============================================================================
+  mosquitto:
+    image: eclipse-mosquitto:2.0.18
+    container_name: mqtt-mosquitto
+    restart: unless-stopped
+    ports:
+      - "1883:1883"        # ✅ MQTT - EXPONIERT für Messgeräte & externe Systeme
+    volumes:
+      - /volume1/docker/mqtt/config/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+      - mosquitto-data:/mosquitto/data
+      - mosquitto-log:/mosquitto/log
+    networks:
+      - mqtt-network
+    healthcheck:
+      test: ["CMD", "mosquitto_pub", "-h", "localhost", "-t", "health", "-m", "check", "-q", "1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
