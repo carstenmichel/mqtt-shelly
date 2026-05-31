@@ -27,7 +27,7 @@ services:
     environment:
       - discovery.type=single-node
       - xpack.security.enabled=false
-      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+      - "ES_JAVA_OPTS=-Xms512m -Xmx1g"
       - cluster.name=mqtt-energy-cluster
       - node.name=mqtt-es-node-1
     expose:
@@ -50,7 +50,32 @@ services:
       nofile:
         soft: 65536
         hard: 65536    
-
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.11.0
+    container_name: mqtt-logstash
+    restart: unless-stopped
+    environment:
+      - "LS_JAVA_OPTS=-Xms512m -Xmx512m"
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - MQTT_HOST=mosquitto
+      - MQTT_PORT=1883
+    # ❌ KEINE ports-Sektion - Keine eingehenden Verbindungen nötig
+    volumes:
+      - /volume1/docker/mqtt/logstash/pipeline:/usr/share/logstash/pipeline:ro
+      - /volume1/docker/mqtt/logstash/templates:/usr/share/logstash/templates:ro
+    networks:
+      - mqtt-network
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+      mosquitto:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9600/_node/stats || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
 
 
 #Network
