@@ -59,8 +59,8 @@ services:
     restart: unless-stopped
     environment:
       - "LS_JAVA_OPTS=-Xms512m -Xmx512m"
-      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
-      - MQTT_HOST=mosquitto
+      - ELASTICSEARCH_HOSTS=http://mqtt-elasticsearch:9200
+      - MQTT_HOST=mqtt-mosquitto
       - MQTT_PORT=1883
     # ❌ KEINE ports-Sektion - Keine eingehenden Verbindungen nötig
     volumes:

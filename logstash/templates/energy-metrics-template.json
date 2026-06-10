@@ -1,0 +1,57 @@
+{
+  "index_patterns": ["energy-metrics-*"],
+  "template": {
+    "settings": {
+      "number_of_shards": 1,
+      "number_of_replicas": 0,
+      "index.lifecycle.name": "energy-metrics-policy",
+      "index.lifecycle.rollover_alias": "energy-metrics",
+      "refresh_interval": "30s",
+      "codec": "best_compression"
+    },
+    "mappings": {
+      "properties": {
+        "@timestamp": {
+          "type": "date",
+          "format": "strict_date_optional_time||epoch_millis"
+        },
+        "meter_id": {
+          "type": "keyword"
+        },
+        "category": {
+          "type": "keyword"
+        },
+        "metric_type": {
+          "type": "keyword"
+        },
+        "value": {
+          "type": "float"
+        },
+        "value_kw": {
+          "type": "float"
+        },
+        "unit": {
+          "type": "keyword"
+        },
+        "location": {
+          "type": "keyword"
+        },
+        "device_type": {
+          "type": "keyword"
+        },
+        "department": {
+          "type": "keyword"
+        },
+        "source": {
+          "type": "keyword"
+        },
+        "system": {
+          "type": "keyword"
+        },
+        "topic": {
+          "type": "keyword"
+        }
+      }
+    }
+  }
+}
