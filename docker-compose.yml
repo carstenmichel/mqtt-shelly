@@ -33,6 +33,9 @@ services:
     expose:
       - "9200"  # Nur für Container-zu-Container Kommunikation
       - "9300"
+    #only for config time?   
+    ports:
+      - "9200:9200"
     volumes:
       - elasticsearch-data:/usr/share/elasticsearch/data
     networks:
