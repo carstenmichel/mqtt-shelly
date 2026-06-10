@@ -4,7 +4,7 @@ services:
   # ============================================================================
   mosquitto:
     image: eclipse-mosquitto:2.0.18
-    container_name: mqtt-mosquitto
+    container_name: mosquitto
     restart: unless-stopped
     ports:
       - "1883:1883"        # ✅ MQTT - EXPONIERT für Messgeräte & externe Systeme
@@ -22,7 +22,7 @@ services:
       start_period: 10s
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
-    container_name: mqtt-elasticsearch
+    container_name: elasticsearch
     restart: unless-stopped
     environment:
       - discovery.type=single-node
@@ -54,13 +54,13 @@ services:
         soft: 65536
         hard: 65536    
   logstash:
-    image: docker.elastic.co/logstash/logstash:8.11.0
+    image: docker.elastic.co/logstash/logstash:9.0
     container_name: mqtt-logstash
     restart: unless-stopped
     environment:
       - "LS_JAVA_OPTS=-Xms512m -Xmx512m"
-      - ELASTICSEARCH_HOSTS=http://mqtt-elasticsearch:9200
-      - MQTT_HOST=mqtt-mosquitto
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - MQTT_HOST=mosquitto
       - MQTT_PORT=1883
     # ❌ KEINE ports-Sektion - Keine eingehenden Verbindungen nötig
     volumes:
